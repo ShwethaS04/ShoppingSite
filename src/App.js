@@ -7,6 +7,7 @@ import Axios from 'axios';
 import { BrowserRouter, Redirect, Route, Switch } from 'react-router-dom';
 import { Provider } from 'react-redux';
 import store from './store';
+import { initializeItems } from './AppActions';
 
 class App extends Component {
   state = {
@@ -17,28 +18,7 @@ class App extends Component {
 
   componentDidMount() {
     setTimeout(() => Axios.get('http://my-json-server.typicode.com/4d4rsh/mock-shopping-site-data/items')
-      .then(response => this.setState({
-        items: response.data
-      })), 2000);
-  }
-
-  handleAddToCart = item => {
-    let tempCart = [...this.state.cart];
-    let valueFound = false;
-    for (let i = 0; i < tempCart.length; i++) {
-      if (tempCart[i].id === item.id) {
-        tempCart[i] = { ...tempCart[i], count: tempCart[i].count + 1 }
-        valueFound = true;
-        break;
-      }
-    }
-    if (!valueFound) {
-      tempCart = [...tempCart, { ...item, count: 1 }]
-    }
-    this.setState({
-      cart: tempCart,
-      totalItems: this.state.totalItems + 1
-    })
+      .then(response => store.dispatch(initializeItems(response.data))), 2000);
   }
 
   handleRemoveOne = itemId => {
@@ -72,7 +52,7 @@ class App extends Component {
   }
 
   render() {
-    const { totalItems, items, cart } = this.state;
+    const { totalItems, cart } = this.state;
     return (
       <Provider store={store}>
         <BrowserRouter>
@@ -81,10 +61,7 @@ class App extends Component {
             <main className={style.appContent}>
               <Switch>
                 <Redirect exact from="/" to="/items" />
-                <Route path='/items'
-                  render={(routeProps) => <ItemsList {...routeProps}
-                    items={items}
-                    onAddToCart={this.handleAddToCart} />} />
+                <Route path='/items' component={ItemsList} />
                 <Route path='/cart'
                   render={(routeProps) => <Cart {...routeProps}
                     items={cart}

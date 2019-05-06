@@ -10,3 +10,16 @@ export const AppActions = {
 // ------------------------------------
 // Actions
 // ------------------------------------
+export const initializeItems = items => {
+    return {
+        type: AppActions.INITIALIZE_ITEMS,
+        payload: items
+    }
+}
+
+export const addItemToCart = item => {
+    return {
+        type: AppActions.ADD_ITEM_TO_CART,
+        payload: item
+    }
+}
