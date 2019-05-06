@@ -25,7 +25,8 @@ const Navbar = ({ activeTab, onTabChange, totalItems }) => {
 
 Navbar.propTypes = {
   activeTab: PropTypes.number.isRequired,
-  onTabChange: PropTypes.func.isRequired
+  onTabChange: PropTypes.func.isRequired,
+  totalItems:PropTypes.number.isRequired
 }
 
 export default Navbar;
