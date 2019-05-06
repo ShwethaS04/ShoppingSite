@@ -9,7 +9,8 @@ class App extends Component {
   state = {
     activeTab: 0,
     items: [],
-    cart: []
+    cart: [],
+    totalItems: 0
   };
 
   componentDidMount() {
@@ -39,7 +40,8 @@ class App extends Component {
       tempCart = [...tempCart, { ...item, count: 1 }]
     }
     this.setState({
-      cart: tempCart
+      cart: tempCart,
+      totalItems: this.state.totalItems+1
     })
   }
 
@@ -55,7 +57,8 @@ class App extends Component {
     }
 
     this.setState({
-      cart: tempCart
+      cart: tempCart,
+      totalItems: this.state.totalItems-1
     })
   }
 
@@ -67,7 +70,8 @@ class App extends Component {
     tempCart.splice(index, 1, newItem);
 
     this.setState({
-      cart: tempCart
+      cart: tempCart,
+      totalItems: this.state.totalItems+1
     })
   }
 
@@ -85,11 +89,11 @@ class App extends Component {
   }
 
   render() {
-    const { activeTab } = this.state;
+    const { activeTab, totalItems } = this.state;
     return (
       <div className="App">
         <div className={styles.app}>
-          <Navbar activeTab={activeTab} onTabChange={this.handleTabChange} />
+          <Navbar activeTab={activeTab} onTabChange={this.handleTabChange} totalItems={totalItems}/>
           <main className={styles.appContent}>
             {this.renderContent()}
           </main>
